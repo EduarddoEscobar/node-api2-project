@@ -66,7 +66,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    posts.delete(id)
+    posts.remove(id)
         .then(post => {
             if(post){
                 res.status(200).json(post);
