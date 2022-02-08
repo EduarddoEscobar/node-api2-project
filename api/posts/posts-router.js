@@ -17,10 +17,11 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     posts.findById(req.params.id)
         .then(post => {
-            if(post){
-                res.status(200).json(post);
-            }else{
+            console.log(post);
+            if(!post){
                 res.status(404).json({ message: 'The post with the specified ID does not exist'});
+            }else{
+                res.status(200).json(post);
             }
         }).catch(err => {
             console.error(err);
@@ -34,7 +35,8 @@ router.post('/', (req, res) => {
     if(title && contents){
         posts.insert(req.body)
             .then(post => {
-                res.status(201).json(post)
+                console.log(post);
+                res.status(201).json({...post, ...req.body});
             }).catch(err => {
                 console.error(err);
                 res.status(500).json({message: "There was an error while saving the post to the database"});
@@ -50,6 +52,7 @@ router.put('/:id', (req, res) => {
     if(title && contents){
         posts.update(id, req.body)
             .then(post => {
+                console.log(post);
                 if(post){
                     res.status(200).json(post)
                 }else{
@@ -68,6 +71,7 @@ router.delete('/:id', (req, res) => {
     const { id } = req.params;
     posts.remove(id)
         .then(post => {
+            console.log(post);
             if(post){
                 res.status(200).json(post);
             }else{
@@ -83,6 +87,7 @@ router.get('/:id/comments', (req, res) => {
     const { id } = req.params;
     posts.findPostComments(id)
         .then(comments => {
+            console.log(comments);
             if(comments){
                 res.status(200).json(comments);
             }else{
